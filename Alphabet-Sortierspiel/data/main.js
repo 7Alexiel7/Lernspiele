@@ -6,7 +6,7 @@ const sortElements = [
     ['abc', 'abcdefghijklmnopqrstuvwxyz', 'abcdefghijklmnopqrstuvwxyz'],
     ['Abc', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'],
     ['ABC', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'],
-    ['123', '0123456789', '0123456789']];
+    ['123', '123456789', '123456789']];
 let unsortedList = [];
 let resolvedList = [];
 let sortedList = [];
@@ -16,7 +16,6 @@ let html = '';
  * Initialize the view and add event listeners
  */
 function view() {
-
     formElement.querySelector('form').addEventListener('submit', (event) => {
         event.preventDefault();
         // clear data from previous game
@@ -24,10 +23,11 @@ function view() {
         // get user input
         const count = parseInt(document.getElementById('answer').value, 10);
         const letters = parseInt(document.getElementById('letters').value, 10);
+        const signs = document.getElementById('signs').value;
         // start game
         if(!count) return;
         for(let i=0; i<count; i++) {
-            unsortedList.push(getLetters(letters));
+            unsortedList.push(getLetters(letters, signs));
         }
         // create sorted list for later comparison
         sortedList.push(...unsortedList);
@@ -191,12 +191,14 @@ function addDragAndDropListeners() {
  * @param {number} length taret length of the random string
  * @returns random string of letters
  */
-function getLetters(length) {
-    const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+function getLetters(length, abc) {
+    const ind = sortElements.findIndex((e) => e[0] === abc);
+    const alpha1 = sortElements[ind][1];
+    const alpha2 = sortElements[ind][2];
     let result = '';
-    result += alphabet[Math.floor(Math.random() * alphabet.length)];
+    result += alpha1[Math.floor(Math.random() * alpha1.length)];
     for (let i = 1; i < length; i++) {
-        result += alphabet[Math.floor(Math.random() * alphabet.length)];
+        result += alpha2[Math.floor(Math.random() * alpha2.length)];
     }
     return result;
 }
